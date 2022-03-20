@@ -1,10 +1,13 @@
+import cors from 'cors';
 import express from 'express';
-import dotenv from 'dotenv';
+import helmet from 'helmet';
 
-dotenv.config();
 const app = express();
 
 app.set('view engine', 'ejs');
+
+app.use(helmet());
+app.use(cors());
 app.use(express.static('views'));
 app.use(express.urlencoded({ extended: true }));
 
