@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon';
 import {
     BaseEntity, Entity,
-    Column, PrimaryGeneratedColumn,
-    ValueTransformer
+    Column, PrimaryGeneratedColumn, JoinColumn,
+    ValueTransformer,
+    ManyToOne,
 } from 'typeorm';
+import { User } from './user.entity';
 
 /**
  * Since the database can only accept {@link Date}
@@ -25,8 +27,8 @@ export class Todo extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ name: 'full_name', length: 64 })
-    content!: 128;
+    @Column({ length: 128 })
+    content!: string;
 
     @Column({
         name: 'created_at',
@@ -43,6 +45,10 @@ export class Todo extends BaseEntity {
         default: DateTime.utc()
     })
     updatedAt!: DateTime;
+
+    @ManyToOne(() => User, (user) => user.todos)
+    @JoinColumn({ name: 'user_id' })
+    user!: User;
 
     build() {
         const clone = { ...this } as Record<string, unknown>;
