@@ -3,10 +3,10 @@
     "version": "0.0.1",
     "description": "A basic todo list app",
     "scripts": {
-        "start": "node dist/main.js",
+        "start": "node dist/server.js",
         "compile": "yarn clean && tsc",
         "clean": "rimraf ./dist",
-        "dev": "nodemon src/main.ts"
+        "dev": "nodemon src/server.ts"
     },
     "author": "Alviannn",
     "license": "MIT",
