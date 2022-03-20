@@ -1,3 +1,4 @@
+import { User } from './user.entity';
 import { DateTime } from 'luxon';
 import {
     BaseEntity, Entity,
@@ -5,7 +6,6 @@ import {
     ValueTransformer,
     ManyToOne,
 } from 'typeorm';
-import { User } from './user.entity';
 
 /**
  * Since the database can only accept {@link Date}

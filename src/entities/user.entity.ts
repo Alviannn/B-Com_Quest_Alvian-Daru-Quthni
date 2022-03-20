@@ -43,7 +43,6 @@ export class User extends BaseEntity {
     createdAt!: DateTime;
 
     @OneToMany(() => Todo, (todo) => todo.user)
-    @Column()
     todos!: Todo[];
 
 }
