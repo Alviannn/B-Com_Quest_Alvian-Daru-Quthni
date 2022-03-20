@@ -12,12 +12,12 @@ async function homePage(req: Request, res: Response) {
     }
 }
 
-async function insertPage(req: Request, res: Response) {
-
+function insertPage(req: Request, res: Response) {
+    return res.render('insert.ejs');
 }
 
-async function updatePage(req: Request, res: Response) {
-
+function updatePage(req: Request, res: Response) {
+    return res.render('update.ejs');
 }
 
 async function addTodo(req: Request, res: Response) {
