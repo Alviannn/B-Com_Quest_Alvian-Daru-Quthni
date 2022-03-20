@@ -20,6 +20,8 @@ const dateTransformer: ValueTransformer = {
 @Entity('todos')
 export class Todo extends BaseEntity {
 
+    static readonly DATE_FORMAT = 'dd-MM-yyyy HH:mm:ss';
+
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -40,6 +42,15 @@ export class Todo extends BaseEntity {
         transformer: dateTransformer,
         default: DateTime.utc()
     })
-    updatedAt!: Date;
+    updatedAt!: DateTime;
+
+    build() {
+        const clone = { ...this } as Record<string, unknown>;
+
+        clone.createdAt = this.createdAt.toFormat(Todo.DATE_FORMAT);
+        clone.updatedAt = this.updatedAt.toFormat(Todo.DATE_FORMAT);
+
+        return clone;
+    }
 
 }
