@@ -4,13 +4,13 @@ import { ConnectionOptions } from 'typeorm';
 dotenv.config();
 const { env } = process;
 
-export const connectionConfig: ConnectionOptions = {
-    type: 'mariadb',
+const connectionConfig: ConnectionOptions = {
+    type: 'postgres',
     host: env.DB_HOST!,
     port: parseInt(env.DB_PORT!),
     username: env.DB_USERNAME!,
     password: env.DB_PASSWORD!,
-    database: env.DB_DATABASE,
+    database: env.DB_DATABASE!,
     synchronize: true,
     entities: [
         'dist/entities/**/*.js'
@@ -27,3 +27,5 @@ export const connectionConfig: ConnectionOptions = {
         subscribersDir: 'src/subscribers'
     }
 };
+
+export { connectionConfig };
