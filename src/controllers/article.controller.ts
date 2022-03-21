@@ -54,7 +54,29 @@ async function updateArticle(req: Request, res: Response) {
 }
 
 async function deleteArticle(req: Request, res: Response) {
+    const { articleId } = req.params;
 
+    try {
+        const article = await Article.findOne({
+            where: {
+                id: parseInt(articleId)
+            }
+        });
+
+        if (!article) {
+            return sendResponse(res, {
+                success: false,
+                statusCode: StatusCodes.NOT_FOUND,
+                message: 'Cannot find article'
+            });
+        }
+
+        await Article.delete(article);
+
+        return sendResponse(res, { message: 'Deleted article' });
+    } catch (err) {
+        return sendResponse(res, Errors.SERVER_ERROR);
+    }
 }
 
 export { addArticle, readArticle, updateArticle, deleteArticle };
