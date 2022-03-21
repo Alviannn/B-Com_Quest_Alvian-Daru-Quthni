@@ -20,18 +20,16 @@ export class Comment extends BaseEntity {
     @Column({
         name: 'created_at',
         type: 'timestamp',
-        transformer: dateTransformer,
-        default: DateTime.utc()
+        transformer: dateTransformer
     })
-    createdAt!: DateTime;
+    createdAt = DateTime.utc();
 
     @Column({
         name: 'updated_at',
         type: 'timestamp',
-        transformer: dateTransformer,
-        default: DateTime.utc()
+        transformer: dateTransformer
     })
-    updatedAt!: DateTime;
+    updatedAt = DateTime.utc();
 
     @ManyToOne(() => User, (user) => user.articles, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'author_id' })

@@ -23,18 +23,16 @@ export class Article extends BaseEntity {
     @Column({
         name: 'created_at',
         type: 'timestamp',
-        transformer: dateTransformer,
-        default: DateTime.utc()
+        transformer: dateTransformer
     })
-    createdAt!: DateTime;
+    createdAt = DateTime.utc();
 
     @Column({
         name: 'updated_at',
         type: 'timestamp',
-        transformer: dateTransformer,
-        default: DateTime.utc()
+        transformer: dateTransformer
     })
-    updatedAt!: DateTime;
+    updatedAt = DateTime.utc();
 
     @OneToMany(() => Comment, (comment) => comment.article)
     comments!: Comment[];

@@ -38,13 +38,12 @@ export class User extends BaseEntity {
     @Column({
         name: 'created_at',
         type: 'timestamp',
-        transformer: dateTransformer,
-        default: DateTime.utc()
+        transformer: dateTransformer
     })
-    createdAt!: DateTime;
+    createdAt = DateTime.utc();
 
-    @Column({ type: 'smallint', default: Roles.MEMBER })
-    role!: Roles;
+    @Column({ type: 'smallint' })
+    role = Roles.MEMBER;
 
     @OneToMany(() => Article, (article) => article.author)
     articles!: Article[];
