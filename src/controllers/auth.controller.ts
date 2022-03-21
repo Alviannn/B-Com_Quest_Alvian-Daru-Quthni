@@ -1,15 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import config from '../configs/config';
 
 import { Request, Response } from 'express';
 import { LoginType, RegisterType } from '../validations/user.validation';
 import { User } from '../entities/user.entity';
 import { sendResponse, Errors } from '../utils/api.util';
 import { StatusCodes } from 'http-status-codes';
-
-const HASH_ROUNDS = 12;
-const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET!;
-const ACCESS_EXPIRE = process.env.JWT_EXPIRE_TIME!;
 
 async function register(req: Request, res: Response) {
     const body = req.body as RegisterType;
@@ -28,7 +25,7 @@ async function register(req: Request, res: Response) {
     }
 
     const user = User.create({ ...body });
-    user.password = await bcrypt.hash(body.password, HASH_ROUNDS);
+    user.password = await bcrypt.hash(body.password, config.hashRounds);
 
     try {
         await User.save(user);
@@ -81,9 +78,10 @@ async function login(req: Request, res: Response) {
             sub: foundUser.id,
             username: foundUser.username
         },
-        ACCESS_SECRET,
+        config.jwt.accessSecret,
         {
-            expiresIn: ACCESS_EXPIRE
+            expiresIn: config.jwt.accessSecret,
+            notBefore: config.jwt.notBefore
         });
 
     return sendResponse(res, {

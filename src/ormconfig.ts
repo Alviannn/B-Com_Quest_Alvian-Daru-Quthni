@@ -1,16 +1,10 @@
-import dotenv from 'dotenv';
-import { ConnectionOptions } from 'typeorm';
+import config from './configs/config';
 
-dotenv.config();
-const { env } = process;
+import { ConnectionOptions } from 'typeorm';
 
 const connectionConfig: ConnectionOptions = {
     type: 'postgres',
-    host: env.DB_HOST!,
-    port: parseInt(env.DB_PORT!),
-    username: env.DB_USERNAME!,
-    password: env.DB_PASSWORD!,
-    database: env.DB_DATABASE!,
+    ...config.db,
     synchronize: true,
     entities: [
         'dist/entities/**/*.js'
