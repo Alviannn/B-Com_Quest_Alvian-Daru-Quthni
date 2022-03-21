@@ -6,6 +6,8 @@ import { User } from './entities/user.entity';
 import { faker } from '@faker-js/faker';
 import { Article } from './entities/article.entity';
 import { Comment } from './entities/comment.entity';
+import { createConnection } from 'typeorm';
+import { connectionConfig } from './ormconfig';
 
 type FullArticleType = {
     title: string,
@@ -116,7 +118,7 @@ async function addArticle(
     await Promise.all(promises);
 }
 
-export async function seedData() {
+async function seedData() {
     const admin = await User.findOne({
         where: {
             username: 'admin'
@@ -140,3 +142,9 @@ export async function seedData() {
 
     await Promise.all(articlePromises);
 }
+
+createConnection(connectionConfig)
+    .then(async () => {
+        await seedData();
+    })
+    .catch((err) => console.error(err));
