@@ -1,15 +1,13 @@
 // disabling `max-len` to allow article text
 
 /* eslint-disable max-len */
+import bcrypt from 'bcrypt';
+import config from './configs/config';
 
 import { Roles, User } from './entities/user.entity';
 import { faker } from '@faker-js/faker';
 import { Article } from './entities/article.entity';
 import { Comment } from './entities/comment.entity';
-import { createConnection } from 'typeorm';
-import { connectionConfig } from './ormconfig';
-import bcrypt from 'bcrypt';
-import config from './configs/config';
 
 type FullArticleType = {
     title: string,
