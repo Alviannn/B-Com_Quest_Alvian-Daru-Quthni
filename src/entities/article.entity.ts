@@ -40,7 +40,7 @@ export class Article extends BaseEntity {
     comments!: Comment[];
 
     @ManyToOne(() => User, (user) => user.articles)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'author_id' })
     author!: User;
 
     build() {

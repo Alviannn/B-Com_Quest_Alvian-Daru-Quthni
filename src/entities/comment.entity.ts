@@ -34,7 +34,7 @@ export class Comment extends BaseEntity {
     updatedAt!: DateTime;
 
     @ManyToOne(() => User, (user) => user.articles)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'author_id' })
     author!: User;
 
     @ManyToOne(() => Article, (article) => article.comments)
