@@ -120,4 +120,17 @@ async function deleteArticle(req: Request, res: Response) {
     }
 }
 
-export { addArticle, readArticle, updateArticle, deleteArticle };
+async function getAllArticle(_: Request, res: Response) {
+    try {
+        const articles = await Article.find({ relations: ['comments'] });
+
+        return sendResponse(res, {
+            message: 'Found article(s)',
+            data: { articles }
+        });
+    } catch (err) {
+        return sendResponse(res, Errors.SERVER_ERROR);
+    }
+}
+
+export { addArticle, readArticle, updateArticle, deleteArticle, getAllArticle };
