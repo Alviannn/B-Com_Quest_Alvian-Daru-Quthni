@@ -13,10 +13,6 @@ import {
 const articleRouter = Router();
 
 articleRouter.get('/', controller.getAllArticle);
-articleRouter.get('/:articleId',
-    validate(articleSchema),
-    controller.readArticle
-);
 
 articleRouter.post('/',
     validate(articleSchema),
@@ -41,6 +37,10 @@ articleRouter.delete('/:articleId',
     permission(Roles.ADMIN),
 
     controller.deleteArticle
+);
+articleRouter.get('/:articleId',
+    validate(articleIdSchema, true),
+    controller.readArticle
 );
 
 export { articleRouter };
