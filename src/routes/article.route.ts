@@ -12,32 +12,33 @@ import {
 
 const articleRouter = Router();
 
+articleRouter.get('/', controller.getAllArticle);
 articleRouter.get('/:articleId',
-    authenticate,
     validate(articleSchema),
-
     controller.readArticle
 );
+
 articleRouter.post('/',
+    validate(articleSchema),
     authenticate,
     permission(Roles.ADMIN),
-    validate(articleSchema),
 
     controller.addArticle
 );
 articleRouter.put('/:articleId',
-    authenticate,
-    permission(Roles.ADMIN),
-
     validate(articleIdSchema, true),
     validate(articleSchema),
+
+    authenticate,
+    permission(Roles.ADMIN),
 
     controller.updateArticle,
 );
 articleRouter.delete('/:articleId',
+    validate(articleIdSchema, true),
+
     authenticate,
     permission(Roles.ADMIN),
-    validate(articleIdSchema, true),
 
     controller.deleteArticle
 );

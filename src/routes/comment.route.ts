@@ -21,26 +21,26 @@ commentRouter.get(
 commentRouter.post(
     `${baseUrl}/`,
 
-    authenticate,
     validate(articleIdSchema, true),
     validate(commentSchema),
+    authenticate,
 
     controller.addComment
 );
 commentRouter.put(
     `${baseUrl}/:commentId`,
 
-    authenticate,
     validate(commentIdSchema, true),
     validate(commentSchema),
+    authenticate,
 
     controller.updateComment
 );
 commentRouter.delete(
     `${baseUrl}/:commentId`,
 
-    authenticate,
     validate(commentIdSchema, true),
+    authenticate,
 
     controller.updateComment
 );
