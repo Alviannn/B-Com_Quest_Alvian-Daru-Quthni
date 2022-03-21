@@ -3,12 +3,26 @@ import { Article } from '../entities/article.entity';
 import { ArticleType } from '../validations/article.validation';
 import { Errors, sendResponse } from '../utils/api.util';
 import { StatusCodes } from 'http-status-codes';
+import { UserPayload } from '../middlewares/authenticate.middleware';
+import { User } from '../entities/user.entity';
 
 async function addArticle(req: Request, res: Response) {
+    const payload = req.body.payload as UserPayload;
+    let author: User | undefined;
+
+    try {
+        author = await User.findOne({ where: { id: payload.id } });
+        if (!author) {
+            return sendResponse(res, Errors.NO_SESSION_ERROR);
+        }
+    } catch (err) {
+        return sendResponse(res, Errors.SERVER_ERROR);
+    }
+
     delete req.body.payload;
     const body = req.body as ArticleType;
 
-    const article = Article.create({ ...body });
+    const article = Article.create({ ...body, author });
     try {
         await Article.save(article);
 
