@@ -84,7 +84,7 @@ async function login(req: Request, res: Response) {
         payload,
         config.jwt.accessSecret,
         {
-            expiresIn: config.jwt.accessSecret,
+            expiresIn: config.jwt.accessExpire,
             notBefore: config.jwt.notBefore
         });
 
