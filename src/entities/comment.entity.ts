@@ -1,23 +1,20 @@
 import { User } from './user.entity';
-import { Comment } from './comment.entity';
-import { DATE_FORMAT, dateTransformer } from '.';
+import { Article } from './article.entity';
 import { DateTime } from 'luxon';
+import { DATE_FORMAT, dateTransformer } from '.';
 import {
     BaseEntity, Entity,
     Column, PrimaryGeneratedColumn, JoinColumn,
-    ManyToOne, OneToMany
+    ManyToOne
 } from 'typeorm';
 
-@Entity('articles')
-export class Article extends BaseEntity {
+@Entity('comments')
+export class Comment extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ length: 128 })
-    title!: string;
-
-    @Column({ length: 2_000 })
+    @Column({ length: 500 })
     content!: string;
 
     @Column({
@@ -36,12 +33,13 @@ export class Article extends BaseEntity {
     })
     updatedAt!: DateTime;
 
-    @OneToMany(() => Comment, (comment) => comment.article)
-    comments!: Comment[];
-
     @ManyToOne(() => User, (user) => user.articles)
     @JoinColumn({ name: 'user_id' })
     author!: User;
+
+    @ManyToOne(() => Article, (article) => article.comments)
+    @JoinColumn({ name: 'article_id' })
+    article!: Article;
 
     build() {
         const clone = { ...this } as Record<string, unknown>;
