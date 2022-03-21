@@ -5,11 +5,6 @@ export type ArticleType = {
     content: string
 }
 
-export type UpdateArticleType = {
-    title?: string,
-    content?: string
-}
-
 export type ArticleIdType = {
     articleId: string
 }
@@ -22,14 +17,6 @@ export const articleSchema = joi.object({
     content: joi.string()
         .max(2_000)
         .required()
-}) as ObjectSchema<ArticleType>;
-
-export const updateArticleSchema = joi.object({
-    title: joi.string()
-        .max(128),
-
-    content: joi.string()
-        .max(2_000)
 }) as ObjectSchema<ArticleType>;
 
 export const articleIdSchema = joi.object({
