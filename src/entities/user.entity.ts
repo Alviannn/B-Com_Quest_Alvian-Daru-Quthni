@@ -1,23 +1,24 @@
 import { DateTime } from 'luxon';
+import { Article } from './article.entity';
+import { dateTransformer } from '.';
 import {
     BaseEntity, Entity,
     Column, PrimaryGeneratedColumn,
-    OneToMany,
-    ValueTransformer
+    OneToMany
 } from 'typeorm';
-import { Todo } from './todo.entity';
 
-/**
- * Since the database can only accept {@link Date}
- * we have to make it transform from {@link DateTime} to {@link Date}
- *
- * Well, I want to use {@link DateTime} from luxon
- * so that I can easily format it using {@link Todo.DATE_FORMAT}
- */
-const dateTransformer: ValueTransformer = {
-    from: (date: Date) => DateTime.fromJSDate(date),
-    to: (date: DateTime) => date.toJSDate()
-};
+export enum Roles {
+
+    /**
+     * An admin has the permission to make an article post
+     */
+    ADMIN,
+    /**
+     * A member has the permission to make a comment on the article
+     */
+    MEMBER
+
+}
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -42,7 +43,10 @@ export class User extends BaseEntity {
     })
     createdAt!: DateTime;
 
-    @OneToMany(() => Todo, (todo) => todo.user)
-    todos!: Todo[];
+    @Column({ type: 'smallint' })
+    role!: Roles;
+
+    @OneToMany(() => Article, (article) => article.author)
+    articles!: Article[];
 
 }
