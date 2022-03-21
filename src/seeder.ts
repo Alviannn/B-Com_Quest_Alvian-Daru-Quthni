@@ -2,12 +2,14 @@
 
 /* eslint-disable max-len */
 
-import { User } from './entities/user.entity';
+import { Roles, User } from './entities/user.entity';
 import { faker } from '@faker-js/faker';
 import { Article } from './entities/article.entity';
 import { Comment } from './entities/comment.entity';
 import { createConnection } from 'typeorm';
 import { connectionConfig } from './ormconfig';
+import bcrypt from 'bcrypt';
+import config from './configs/config';
 
 type FullArticleType = {
     title: string,
@@ -42,7 +44,7 @@ const ARTICLE_LIST: FullArticleType[] = [
         ]
     },
     {
-        title: '10 useful VS code extensions to make life easier ーPart- 3',
+        title: '10 useful VS code extensions to make life easier -Part- 3',
         content:
             'A soldier loves his weapon more than anything. Developers are soldiers, and an\n' +
             "IDE is a weapon. A soldier's greatest responsibility is always to power up his\n" +
@@ -67,6 +69,26 @@ const ARTICLE_LIST: FullArticleType[] = [
     }
 ];
 
+/**
+ * There should be an admin
+ */
+async function addAdmin() {
+    const admin = User.create({
+        username: 'admin',
+        email: 'admin@admin.com',
+        password: 'admin123',
+        role: Roles.ADMIN
+    });
+
+    const found = await User.findOne({ where: { email: admin.email } });
+    if (found) {
+        return found;
+    }
+
+    admin.password = await bcrypt.hash(admin.password, config.hashRounds);
+    return User.save(admin);
+}
+
 async function addUsers() {
     const promises: Promise<User>[] = [];
 
@@ -76,7 +98,7 @@ async function addUsers() {
         const user = User.create({
             username: faker.internet.userName(names[0], names[1]),
             email: faker.internet.email(names[0], names[1]),
-            password: faker.internet.password(20),
+            password: bcrypt.hashSync(faker.internet.password(20), config.hashRounds)
         });
 
         promises.push(User.save(user));
@@ -119,19 +141,7 @@ async function addArticle(
 }
 
 async function seedData() {
-    const admin = await User.findOne({
-        where: {
-            username: 'admin'
-        }
-    });
-
-    if (!admin) {
-        console.log(
-            'You might want to run the "yarn dev" command ' +
-            'first to add the admin!'
-        );
-        return;
-    }
+    const admin = await addAdmin();
 
     const users = await addUsers();
     const articlePromises: Promise<void>[] = [];
@@ -143,10 +153,4 @@ async function seedData() {
     await Promise.all(articlePromises);
 }
 
-createConnection(connectionConfig)
-    .then(async () => {
-        await seedData();
-
-        process.exit(0);
-    })
-    .catch((err) => console.error(err));
+export { seedData, addAdmin };
