@@ -9,7 +9,8 @@ export type UpdateCommentType = {
 }
 
 export type CommentIdType = {
-    comment: string
+    articleId: string,
+    commentId: string
 }
 
 export const commentSchema = joi.object({
@@ -18,12 +19,11 @@ export const commentSchema = joi.object({
         .required()
 }) as ObjectSchema<CommentType>;
 
-export const updateCommentSchema = joi.object({
-    content: joi.string()
-        .max(500)
-}) as ObjectSchema<UpdateCommentType>;
-
 export const commentIdSchema = joi.object({
+    articleId: joi.number()
+        .min(1)
+        .required(),
+
     commentId: joi.number()
         .min(1)
         .required()
