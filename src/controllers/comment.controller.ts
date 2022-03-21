@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { CommentIdType, CommentType } from '../validations/comment.validation';
 import { Comment } from '../entities/comment.entity';
 import { Article } from '../entities/article.entity';
-import { User } from '../entities/user.entity';
+import { Roles, User } from '../entities/user.entity';
 import { UserPayload } from '../middlewares/authenticate.middleware';
 
 async function fetchArticle(req: Request) {
@@ -114,10 +114,14 @@ async function updateComment(req: Request, res: Response) {
 }
 
 async function deleteComment(req: Request, res: Response) {
+    const payload = req.body.payload as UserPayload;
+
+    delete req.body.payload;
     const { commentId } = req.params as CommentIdType;
 
     try {
         const comment = await Comment.findOne({
+            relations: ['users'],
             where: {
                 id: parseInt(commentId)
             }
@@ -129,6 +133,13 @@ async function deleteComment(req: Request, res: Response) {
                 statusCode: StatusCodes.NOT_FOUND,
                 message: 'Cannot find comment'
             });
+        }
+
+        const isAuthor = comment.author.id === payload.id;
+        const isAdmin = payload.role === Roles.ADMIN;
+
+        if (isAuthor || isAdmin) {
+            return sendResponse(res, Errors.NO_PERMISSION_ERROR);
         }
 
         await Comment.delete(comment);
