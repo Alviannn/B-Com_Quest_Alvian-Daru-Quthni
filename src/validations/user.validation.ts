@@ -30,7 +30,8 @@ export const loginSchema = joi.object({
         .max(64)
         .required(),
 
-    password: passwordSchema
+    password: joi.string()
+        .max(64)
         .required()
 }) as ObjectSchema<LoginType>;
 
@@ -39,4 +40,7 @@ export const registerSchema = loginSchema.append({
         .max(64)
         .email()
         .required(),
+
+    password: passwordSchema
+        .required()
 }) as ObjectSchema<RegisterType>;
