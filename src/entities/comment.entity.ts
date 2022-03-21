@@ -33,7 +33,7 @@ export class Comment extends BaseEntity {
     })
     updatedAt!: DateTime;
 
-    @ManyToOne(() => User, (user) => user.articles)
+    @ManyToOne(() => User, (user) => user.articles, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'author_id' })
     author!: User;
 
