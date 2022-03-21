@@ -43,7 +43,7 @@ export class User extends BaseEntity {
     })
     createdAt!: DateTime;
 
-    @Column({ type: 'smallint' })
+    @Column({ type: 'smallint', default: Roles.MEMBER })
     role!: Roles;
 
     @OneToMany(() => Article, (article) => article.author)
