@@ -5,6 +5,7 @@ import { Errors, sendResponse } from '../utils/api.util';
 import { StatusCodes } from 'http-status-codes';
 import { UserPayload } from '../middlewares/authenticate.middleware';
 import { User } from '../entities/user.entity';
+import { DateTime } from 'luxon';
 
 async function addArticle(req: Request, res: Response) {
     const payload = req.body.payload as UserPayload;
@@ -87,6 +88,7 @@ async function updateArticle(req: Request, res: Response) {
 
         article.title = body.title;
         article.content = body.content;
+        article.updatedAt = DateTime.utc();
 
         await Article.save(article);
         return sendResponse(res, { message: 'Updated article' });

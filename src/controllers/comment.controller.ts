@@ -6,6 +6,7 @@ import { Comment } from '../entities/comment.entity';
 import { Article } from '../entities/article.entity';
 import { Roles, User } from '../entities/user.entity';
 import { UserPayload } from '../middlewares/authenticate.middleware';
+import { DateTime } from 'luxon';
 
 async function fetchArticle(req: Request) {
     const { articleId } = req.body as CommentType;
@@ -103,6 +104,8 @@ async function updateComment(req: Request, res: Response) {
         }
 
         comment.content = body.content;
+        comment.updatedAt = DateTime.utc();
+
         await Comment.save(comment);
 
         return sendResponse(res, {
