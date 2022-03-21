@@ -43,7 +43,8 @@ async function readArticle(req: Request, res: Response) {
         const article = await Article.findOne({
             where: {
                 id: parseInt(articleId)
-            }
+            },
+            relations: ['comments']
         });
 
         if (!article) {
