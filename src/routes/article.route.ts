@@ -17,7 +17,7 @@ articleRouter.get('/:articleId',
     authenticate,
     validate(articleSchema)
 );
-articleRouter.post('/post',
+articleRouter.post('/',
     controller.addArticle,
 
     authenticate,
