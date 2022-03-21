@@ -7,13 +7,13 @@ const connectionConfig: ConnectionOptions = {
     ...config.db,
     synchronize: true,
     entities: [
-        'dist/entities/**/*.js'
+        'dist/entities/**/*.entity.js'
     ],
     migrations: [
-        'dist/migrations/**/*.js'
+        'dist/migrations/**/*.migration.js'
     ],
     subscribers: [
-        'dist/subscribers/**/*.js'
+        'dist/subscribers/**/*.subscriber.js'
     ],
     cli: {
         entitiesDir: 'src/entities',
