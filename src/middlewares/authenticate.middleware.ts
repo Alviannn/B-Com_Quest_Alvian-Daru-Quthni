@@ -1,0 +1,25 @@
+import jwt from 'jsonwebtoken';
+import config from '../configs/config';
+
+import { NextFunction, Request, Response } from 'express';
+import { Errors, sendResponse } from '../utils/api.util';
+
+function authenticate(req: Request, res: Response, next: NextFunction) {
+    const prefix = 'Bearer ';
+    const rawToken = req.header('authorization');
+
+    if (!rawToken || !rawToken.startsWith(prefix)) {
+        return sendResponse(res, Errors.NO_SESSION_ERROR);
+    }
+
+    const token = rawToken.replace(prefix, '');
+    try {
+        jwt.verify(token, config.jwt.accessSecret);
+
+        return next();
+    } catch (err) {
+        return sendResponse(res, Errors.NO_SESSION_ERROR);
+    }
+}
+
+export default authenticate;
