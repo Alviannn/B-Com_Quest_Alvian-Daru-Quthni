@@ -76,7 +76,7 @@ async function readComment(req: Request, res: Response) {
 
         return sendResponse(res, {
             message: 'Found comment',
-            data: { comment }
+            data: { comment: comment.build() }
         });
     } catch (err) {
         return sendResponse(res, Errors.SERVER_ERROR);

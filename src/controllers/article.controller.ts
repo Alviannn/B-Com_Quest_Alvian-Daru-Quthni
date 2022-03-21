@@ -57,7 +57,7 @@ async function readArticle(req: Request, res: Response) {
 
         return sendResponse(res, {
             message: 'Found article',
-            data: { article }
+            data: { article: article.build() }
         });
     } catch (err) {
         return sendResponse(res, Errors.SERVER_ERROR);
@@ -127,7 +127,7 @@ async function getAllArticle(_: Request, res: Response) {
 
         return sendResponse(res, {
             message: 'Found article(s)',
-            data: { articles }
+            data: { articles: articles.map((article) => article.build()) }
         });
     } catch (err) {
         return sendResponse(res, Errors.SERVER_ERROR);
