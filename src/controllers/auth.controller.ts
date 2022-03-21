@@ -76,7 +76,8 @@ async function login(req: Request, res: Response) {
     const accessToken = jwt.sign(
         {
             sub: foundUser.id,
-            username: foundUser.username
+            username: foundUser.username,
+            role: foundUser.role
         },
         config.jwt.accessSecret,
         {
