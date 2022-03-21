@@ -28,7 +28,6 @@ export type RegisterType = LoginType & {
 export const loginSchema = joi.object({
     username: joi.string()
         .max(64)
-        .email()
         .required(),
 
     password: passwordSchema
