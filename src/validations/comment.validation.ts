@@ -4,10 +4,6 @@ export type CommentType = {
     content: string
 }
 
-export type UpdateCommentType = {
-    content?: string
-}
-
 export type CommentIdType = {
     articleId: string,
     commentId: string
