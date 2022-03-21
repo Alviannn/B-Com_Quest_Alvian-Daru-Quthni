@@ -26,7 +26,7 @@ function authenticate(req: Request, res: Response, next: NextFunction) {
 }
 
 export type UserPayload = {
-    sub: number,
+    id: number,
     username: string,
     role: Roles
 }

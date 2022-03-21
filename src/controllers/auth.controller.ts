@@ -7,6 +7,7 @@ import { LoginType, RegisterType } from '../validations/user.validation';
 import { User } from '../entities/user.entity';
 import { sendResponse, Errors } from '../utils/api.util';
 import { StatusCodes } from 'http-status-codes';
+import { UserPayload } from '../middlewares/authenticate.middleware';
 
 async function register(req: Request, res: Response) {
     const body = req.body as RegisterType;
@@ -73,12 +74,14 @@ async function login(req: Request, res: Response) {
         });
     }
 
+    const payload: UserPayload = {
+        id: foundUser.id,
+        username: foundUser.username,
+        role: foundUser.role
+    };
+
     const accessToken = jwt.sign(
-        {
-            sub: foundUser.id,
-            username: foundUser.username,
-            role: foundUser.role
-        },
+        payload,
         config.jwt.accessSecret,
         {
             expiresIn: config.jwt.accessSecret,
