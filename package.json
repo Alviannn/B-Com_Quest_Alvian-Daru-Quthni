@@ -8,7 +8,9 @@
         "clean": "rimraf ./dist",
         "dev": "yarn compile && yarn start",
         "seed": "cross-env SEED=1 yarn dev",
-        "jwt:generate": "node ./scripts/jwt-generate.js"
+        "jwt:generate": "node ./scripts/jwt-generate.js",
+        "lint": "eslint ./src",
+        "lint:fix": "yarn lint --fix"
     },
     "author": "Alviannn",
     "license": "MIT",
