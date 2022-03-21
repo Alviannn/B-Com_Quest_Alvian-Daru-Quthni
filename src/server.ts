@@ -9,6 +9,7 @@ if (process.env.SEED === '1') {
     createConnection(connectionConfig)
         .then(async () => {
             await seedData();
+            console.log('Data seeding is done!');
 
             process.exit(0);
         })
