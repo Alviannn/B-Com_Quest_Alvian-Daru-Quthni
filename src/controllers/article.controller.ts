@@ -50,7 +50,34 @@ async function readArticle(req: Request, res: Response) {
 }
 
 async function updateArticle(req: Request, res: Response) {
+    delete req.body.payload;
 
+    const { articleId } = req.params;
+    const body = req.body as ArticleType;
+
+    try {
+        const article = await Article.findOne({
+            where: {
+                id: parseInt(articleId)
+            }
+        });
+
+        if (!article) {
+            return sendResponse(res, {
+                success: false,
+                statusCode: StatusCodes.NOT_FOUND,
+                message: 'Cannot find article'
+            });
+        }
+
+        article.title = body.title;
+        article.content = body.content;
+
+        await Article.save(article);
+        return sendResponse(res, { message: 'Updated article' });
+    } catch (err) {
+        return sendResponse(res, Errors.SERVER_ERROR);
+    }
 }
 
 async function deleteArticle(req: Request, res: Response) {
