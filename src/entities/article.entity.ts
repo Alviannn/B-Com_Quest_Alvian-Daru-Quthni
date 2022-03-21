@@ -37,6 +37,9 @@ export class Article extends BaseEntity {
     @OneToMany(() => Comment, (comment) => comment.article)
     comments!: Comment[];
 
+    @Column({ name: 'author_id' })
+    authorId!: number;
+
     @ManyToOne(() => User, (user) => user.articles)
     @JoinColumn({ name: 'author_id' })
     author!: User;
