@@ -146,5 +146,7 @@ async function seedData() {
 createConnection(connectionConfig)
     .then(async () => {
         await seedData();
+
+        process.exit(0);
     })
     .catch((err) => console.error(err));
