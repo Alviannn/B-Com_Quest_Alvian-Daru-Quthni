@@ -2,6 +2,8 @@ import { connectionConfig } from './ormconfig';
 import { createConnection } from 'typeorm';
 import { app } from './app';
 import { Roles, User } from './entities/user.entity';
+import bcrypt from 'bcrypt';
+import config from './configs/config';
 
 const port = process.env.PORT ?? 5000;
 
@@ -21,6 +23,7 @@ async function addAdmin() {
         return;
     }
 
+    admin.password = await bcrypt.hash(admin.password, config.hashRounds);
     await User.save(admin);
 }
 
