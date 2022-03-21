@@ -12,12 +12,7 @@ import {
 const commentRouter = Router();
 const baseUrl = '/:articleId/comments';
 
-commentRouter.get(
-    `${baseUrl}/:commentId`,
-    validate(commentIdSchema, true),
 
-    controller.readComment
-);
 commentRouter.post(
     `${baseUrl}/`,
 

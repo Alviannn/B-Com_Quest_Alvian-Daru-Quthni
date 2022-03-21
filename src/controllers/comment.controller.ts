@@ -49,34 +49,7 @@ async function addComment(req: Request, res: Response) {
         return sendResponse(res, {
             message: 'Successfully created a new comment to article',
             statusCode: StatusCodes.CREATED,
-            data: { articleId: comment.id }
-        });
-    } catch (err) {
-        return sendResponse(res, Errors.SERVER_ERROR);
-    }
-}
-
-async function readComment(req: Request, res: Response) {
-    const { commentId } = req.params as CommentIdType;
-
-    try {
-        const comment = await Comment.findOne({
-            where: {
-                id: parseInt(commentId)
-            }
-        });
-
-        if (!comment) {
-            return sendResponse(res, {
-                success: false,
-                statusCode: StatusCodes.NOT_FOUND,
-                message: 'Cannot find comment'
-            });
-        }
-
-        return sendResponse(res, {
-            message: 'Found comment',
-            data: { comment }
+            data: { commentId: comment.id }
         });
     } catch (err) {
         return sendResponse(res, Errors.SERVER_ERROR);
@@ -150,4 +123,4 @@ async function deleteComment(req: Request, res: Response) {
     }
 }
 
-export { addComment, readComment, deleteComment, updateComment };
+export { addComment, deleteComment, updateComment };
