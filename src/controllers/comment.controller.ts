@@ -8,7 +8,7 @@ import { Roles, User } from '../entities/user.entity';
 import { UserPayload } from '../middlewares/authenticate.middleware';
 
 async function fetchArticle(req: Request) {
-    const { articleId } = req.params;
+    const { articleId } = req.body as CommentType;
     const article = await Article.findOne({ where: { id: articleId } });
 
     if (!article) {
@@ -50,6 +50,33 @@ async function addComment(req: Request, res: Response) {
             message: 'Successfully created a new comment to article',
             statusCode: StatusCodes.CREATED,
             data: { commentId: comment.id }
+        });
+    } catch (err) {
+        return sendResponse(res, Errors.SERVER_ERROR);
+    }
+}
+
+async function readComment(req: Request, res: Response) {
+    const { commentId } = req.params as CommentIdType;
+
+    try {
+        const comment = await Comment.findOne({
+            where: {
+                id: parseInt(commentId)
+            }
+        });
+
+        if (!comment) {
+            return sendResponse(res, {
+                success: false,
+                statusCode: StatusCodes.NOT_FOUND,
+                message: 'Cannot find comment'
+            });
+        }
+
+        return sendResponse(res, {
+            message: 'Found comment',
+            data: { comment }
         });
     } catch (err) {
         return sendResponse(res, Errors.SERVER_ERROR);
@@ -123,4 +150,4 @@ async function deleteComment(req: Request, res: Response) {
     }
 }
 
-export { addComment, deleteComment, updateComment };
+export { addComment, readComment, deleteComment, updateComment };
