@@ -18,6 +18,7 @@ app.use(express.json());
 
 // routes
 app.use('/v1/auth', authRouter);
-app.use('/v1/articles', articleRouter, commentRouter);
+app.use('/v1/articles', articleRouter);
+app.use('/v1/comments', commentRouter);
 
 export { app };

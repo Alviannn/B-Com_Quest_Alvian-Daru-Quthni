@@ -3,7 +3,6 @@ import validate from '../middlewares/validate.middleware';
 import authenticate from '../middlewares/authenticate.middleware';
 
 import { Router } from 'express';
-import { articleIdSchema } from '../validations/article.validation';
 import {
     commentIdSchema,
     commentSchema
@@ -12,22 +11,21 @@ import {
 const commentRouter = Router();
 
 commentRouter.get(
-    '/comments/:commentId',
+    '/:commentId',
     validate(commentIdSchema, true),
 
     controller.readComment
 );
 commentRouter.post(
-    '/comments',
+    '/',
 
-    validate(articleIdSchema, true),
     validate(commentSchema),
     authenticate,
 
     controller.addComment
 );
 commentRouter.put(
-    '/comments/:commentId',
+    '/:commentId',
 
     validate(commentIdSchema, true),
     validate(commentSchema),
@@ -36,7 +34,7 @@ commentRouter.put(
     controller.updateComment
 );
 commentRouter.delete(
-    '/comments/:commentId',
+    '/:commentId',
 
     validate(commentIdSchema, true),
     authenticate,
